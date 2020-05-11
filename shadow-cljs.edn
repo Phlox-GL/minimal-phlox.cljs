@@ -3,9 +3,6 @@
   :cache-blockers #{cumulo-util.build}
   :dependencies [
     [mvc-works/hsl "0.1.2"]
-    [mvc-works/shell-page "0.1.10"]
-    [cumulo/util "0.1.10"]
-    [respo "0.12.1"]
     [quamolit/phlox "0.3.0"]
     [org.clojure/core.incubator "0.1.4"]
   ]
@@ -27,10 +24,5 @@
         :build-options {:manifest-name "assets.edn"}
       }
     }
-    :page {
-      :target :node-script, :output-to "target/page.js", :main app.page/main!
-      :devtools {:after-load app.page/main!}
-    }
-    :test {:target :node-test, :output-to "target/test.js", :ns-regexp "test$"}
   }
 }

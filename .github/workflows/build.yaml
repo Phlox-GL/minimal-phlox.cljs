@@ -1,20 +1,18 @@
 
-name: Deploy package
+name: Build Assets
 
 on:
-  release:
-    types: [created]
+  pull_request: {}
+  push:
+    branches:
+      - master
 
 jobs:
-  deploy:
-    name: Deploy
-
+  upload-assets:
     runs-on: ubuntu-latest
-
     steps:
-      - run: curl -O https://download.clojure.org/install/linux-install-1.10.1.507.sh && chmod +x linux-install-1.10.1.507.sh && sudo ./linux-install-1.10.1.507.sh
-
       - uses: actions/checkout@v2
+      - uses: docker://timbru31/java-node:latest
 
       - name: Get yarn cache
         id: yarn-cache
@@ -38,10 +36,5 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-clojars
 
-      - name: run tests
-        run: 'yarn && yarn shadow-cljs compile client'
-
-      - run: echo Working on ${{ github.ref }}
-
-      - name: deploy to clojars
-        run: clojure -A:depstar && env CLOJARS_USERNAME=jiyinyiyong CLOJARS_PASSWORD=${{ secrets.CLOJARS_PASSWORD }} clojure -A:deploy
+      - run: yarn && yarn shadow-cljs compile client
+        name: Build web assets
